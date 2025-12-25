@@ -1,0 +1,54 @@
+package com.example.demo.controller;
+
+import com.example.demo.dto.BookDto;
+import com.example.demo.dto.CreateBookRequestDto;
+import com.example.demo.service.BookService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+@Tag(name = "Book management", description = "Endpoints for managing books")
+@RestController
+@RequestMapping("/books")
+@RequiredArgsConstructor
+public class BookController {
+
+    private final BookService bookService;
+
+    @GetMapping
+    @Operation(summary = "Get all books", description = "Get a paginated and sorted list of books")
+    public Page<BookDto> getAll(@ParameterObject Pageable pageable) {
+        return bookService.findAll(pageable);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get a book by ID", description = "Get details of a specific book by its ID")
+    public BookDto getBookById(@PathVariable Long id) {
+        return bookService.findById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a new book", description = "Add a new book to the library")
+    public BookDto createBook(@RequestBody CreateBookRequestDto bookDto) {
+        return bookService.save(bookDto);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update a book", description = "Update the details of an existing book")
+    public BookDto updateBook(@PathVariable Long id, @RequestBody CreateBookRequestDto bookDto) {
+        return bookService.update(id, bookDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete a book", description = "Delete a specific book from the library")
+    public void deleteBook(@PathVariable Long id) {
+        bookService.deleteById(id);
+    }
+}
