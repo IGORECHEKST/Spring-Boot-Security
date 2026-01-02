@@ -1,11 +1,13 @@
 package com.example.demo.dto;
 
+import com.example.demo.validator.FieldMatch;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 @Data
+@FieldMatch(field = "password", fieldMatch = "repeatPassword", message = "Passwords don't match")
 public class UserRegistrationRequestDto {
     @NotBlank
     @Email
