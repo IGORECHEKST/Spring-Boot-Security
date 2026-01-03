@@ -18,7 +18,8 @@ import org.hibernate.annotations.SQLRestriction;
 @Getter
 @Setter
 @Table(name = "books")
-@FilterDef(name = "deletedBookFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@FilterDef(name = "deletedBookFilter", parameters = @ParamDef(name = "isDeleted",
+        type = Boolean.class))
 @Filter(name = "deletedBookFilter", condition = "is_deleted = :isDeleted")
 @SQLRestriction(value = "is_deleted = FALSE")
 public class Book {
